@@ -30,7 +30,7 @@ const readdir = promisify(fs.readdir);
 const copyFile = promisify(fs.copyFile);
 
 // Configurações
-const GITHUB_PAGES_BASE_URL = 'https://muinkadfy-cmd.github.io/smart-tech-update';
+const GITHUB_PAGES_BASE_URL = 'https://muinkadfy-cmd.github.io/smart-tech-update/update';
 const UPDATE_OUTPUT_DIR = path.join(__dirname, 'update-build');
 const UPDATE_DIR = path.join(__dirname, 'update'); // Pasta para GitHub Pages
 const DIST_DIR = path.join(__dirname, 'dist');
