@@ -1,13 +1,9 @@
 {
-  "available": true,
   "version": "2.0.5",
-  "currentVersion": "2.0.3",
-  "description": "Atualização 2.0.5 do Smart Tech Rolândia",
-  "releaseDate": "2025-12-28T18:50:00.000Z",
-  "downloadUrl": "https://raw.githubusercontent.com/muinkadfy-cmd/smart-tech-update/main/update/update-2.0.5.zip",
-  "size": 127252,
   "minVersion": "2.0.0",
   "requiresRestart": true,
+  "releaseDate": "2025-12-28T22:20:00.000Z",
+  "downloadUrl": "https://github.com/muinkadfy-cmd/smart-tech-update/releases/download/v2.0.5/update-2.0.5.zip",
   "changelog": [
     "Versão 2.0.5",
     "- Correções críticas",
