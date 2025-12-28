@@ -537,15 +537,25 @@ ipcMain.handle('update-check', async (event, drivePath) => {
   }
 });
 
-// Obter versão atual
+// Obter versão atual (compatível com offline e online)
 ipcMain.handle('update-get-current-version', () => {
-  const envCheck = validateElectronEnvironment();
-  if (!envCheck.valid) {
-    return { error: envCheck.error, version: '2.0.0' };
-  }
-  
   try {
-    return updateManager.getCurrentVersion();
+    // Tentar obter versão do updateManager primeiro (offline)
+    const envCheck = validateElectronEnvironment();
+    if (envCheck.valid) {
+      try {
+        const version = updateManager.getCurrentVersion();
+        return version;
+      } catch (error) {
+        // Fallback para updater se updateManager falhar
+        const version = updater.getCurrentVersionSync();
+        return version;
+      }
+    } else {
+      // Se ambiente não válido, tentar updater diretamente
+      const version = updater.getCurrentVersionSync();
+      return version;
+    }
   } catch (error) {
     if (isDev) console.error('Erro ao obter versão atual:', error);
     return '2.0.0';
