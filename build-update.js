@@ -388,8 +388,8 @@ async function main() {
     console.log('📋 Atualizando update.json...');
     const updateData = await updateUpdateJson(newVersion, previousVersion, versionData);
 
-    // 10. Copiar arquivos para pasta /update (GitHub Pages)
-    console.log('\n📤 Copiando arquivos para update/ (GitHub Pages)...');
+    // 10. Copiar arquivos para raiz e pasta /update (GitHub Pages)
+    console.log('\n📤 Copiando arquivos para raiz/ e update/ (GitHub Pages)...');
     await copyToUpdateDir(newVersion);
 
     // 11. Resumo final
