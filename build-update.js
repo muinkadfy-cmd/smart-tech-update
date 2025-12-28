@@ -405,7 +405,11 @@ async function main() {
     console.log(`   - update-build/update-${newVersion}.zip`);
     console.log(`   - update-build/version.json`);
     console.log(`   - update-build/update.json`);
-    console.log(`\n📁 Arquivos para GitHub Pages (update/):`);
+    console.log(`\n📁 Arquivos para GitHub Pages (raiz do repositório):`);
+    console.log(`   - update-${newVersion}.zip`);
+    console.log(`   - version.json`);
+    console.log(`   - update.json`);
+    console.log(`\n📁 Arquivos também em update/ (backup):`);
     console.log(`   - update/update-${newVersion}.zip`);
     console.log(`   - update/version.json`);
     console.log(`   - update/update.json`);
