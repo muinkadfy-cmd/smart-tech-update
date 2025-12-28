@@ -297,16 +297,25 @@ async function updateUpdateJson(newVersion, previousVersion, versionData) {
 }
 
 /**
- * Copia arquivos finais para pasta /update (GitHub Pages)
+ * Copia arquivos finais para raiz do repositório (GitHub Pages)
  */
 async function copyToUpdateDir(version) {
-  const filesToCopy = [
+  // Copiar para pasta update/ (backup/local)
+  const filesToCopyUpdate = [
     { src: path.join(UPDATE_OUTPUT_DIR, `update-${version}.zip`), dest: path.join(UPDATE_DIR, `update-${version}.zip`) },
     { src: path.join(UPDATE_OUTPUT_DIR, 'version.json'), dest: path.join(UPDATE_DIR, 'version.json') },
     { src: path.join(UPDATE_OUTPUT_DIR, 'update.json'), dest: path.join(UPDATE_DIR, 'update.json') }
   ];
 
-  for (const file of filesToCopy) {
+  // Copiar para raiz do repositório (GitHub Pages)
+  const filesToCopyRoot = [
+    { src: path.join(UPDATE_OUTPUT_DIR, `update-${version}.zip`), dest: path.join(__dirname, `update-${version}.zip`) },
+    { src: path.join(UPDATE_OUTPUT_DIR, 'version.json'), dest: path.join(__dirname, 'version.json') },
+    { src: path.join(UPDATE_OUTPUT_DIR, 'update.json'), dest: path.join(__dirname, 'update.json') }
+  ];
+
+  // Copiar para pasta update/
+  for (const file of filesToCopyUpdate) {
     if (fs.existsSync(file.src)) {
       await copyFile(file.src, file.dest);
       console.log(`📋 Copiado: ${path.basename(file.dest)} → update/`);
@@ -314,8 +323,18 @@ async function copyToUpdateDir(version) {
       console.warn(`⚠️  Arquivo não encontrado: ${file.src}`);
     }
   }
+
+  // Copiar para raiz (GitHub Pages)
+  for (const file of filesToCopyRoot) {
+    if (fs.existsSync(file.src)) {
+      await copyFile(file.src, file.dest);
+      console.log(`📋 Copiado: ${path.basename(file.dest)} → raiz/`);
+    } else {
+      console.warn(`⚠️  Arquivo não encontrado: ${file.src}`);
+    }
+  }
   
-  console.log('✅ Arquivos copiados para update/ (pronto para GitHub Pages)');
+  console.log('✅ Arquivos copiados para update/ e raiz/ (pronto para GitHub Pages)');
 }
 
 /**
@@ -395,8 +414,8 @@ async function main() {
     console.log(`   - ${GITHUB_PAGES_BASE_URL}/version.json`);
     console.log(`   - ${GITHUB_PAGES_BASE_URL}/update.json`);
     console.log(`\n📤 Próximos passos:`);
-    console.log(`   1. Faça commit da pasta update/ no repositório GitHub`);
-    console.log(`   2. Os arquivos estarão disponíveis via GitHub Pages`);
+    console.log(`   1. Faça commit dos arquivos na raiz (update.json, version.json, update-${newVersion}.zip)`);
+    console.log(`   2. Os arquivos estarão disponíveis via GitHub Pages na raiz do repositório`);
     console.log(`   3. O sistema verificará automaticamente atualizações`);
     console.log('\n✅ Sistema pronto para distribuição!\n');
 
