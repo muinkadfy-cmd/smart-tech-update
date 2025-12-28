@@ -1,12 +1,12 @@
 {
-  "version": "2.0.7",
+  "version": "2.0.8",
   "minVersion": "2.0.0",
-  "releaseDate": "2025-12-28T22:57:01.515Z",
-  "downloadUrl": "https://github.com/muinkadfy-cmd/smart-tech-update/releases/download/v2.0.7/update-2.0.7.zip",
-  "size": 129975235,
+  "releaseDate": "2025-12-28T23:12:14.338Z",
+  "downloadUrl": "https://github.com/muinkadfy-cmd/smart-tech-update/releases/download/v2.0.8/update-2.0.8.zip",
+  "size": 129978742,
   "requiresRestart": true,
   "changelog": [
-    "Versão 2.0.7",
+    "Versão 2.0.8",
     "- Melhorias de performance",
     "- Correções de bugs",
     "- Atualizações de segurança",
