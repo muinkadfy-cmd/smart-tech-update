@@ -1,12 +1,12 @@
 {
-  "version": "3.0.3",
+  "version": "3.0.4",
   "minVersion": "2.0.0",
-  "releaseDate": "2025-12-29T15:36:55.033Z",
-  "downloadUrl": "https://github.com/muinkadfy-cmd/smart-tech-update/releases/download/v3.0.3/update-3.0.3.zip",
-  "size": 130016926,
+  "releaseDate": "2025-12-29T16:13:22.633Z",
+  "downloadUrl": "https://github.com/muinkadfy-cmd/smart-tech-update/releases/download/v3.0.4/update-3.0.4.zip",
+  "size": 130016743,
   "requiresRestart": true,
   "changelog": [
-    "Versão 3.0.3",
+    "Versão 3.0.4",
     "- Melhorias de performance",
     "- Correções de bugs",
     "- Atualizações de segurança",
