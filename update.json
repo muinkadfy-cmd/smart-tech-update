@@ -1,15 +1,17 @@
 {
+  "available": true,
   "version": "2.0.13",
-  "minVersion": "2.0.0",
-  "releaseDate": "2025-12-29T13:55:51.948Z",
-  "downloadUrl": "https://github.com/muinkadfy-cmd/smart-tech-update/releases/download/v2.0.13/update-2.0.13.zip",
-  "size": 130016052,
-  "requiresRestart": true,
+  "currentVersion": "2.0.13",
+  "description": "Atualização 2.0.13 do Smart Tech Rolândia 2.0",
+  "date": "2025-12-29T14:05:42.810Z",
+  "downloadUrl": "https://muinkadfy-cmd.github.io/smart-tech-update/update/update-2.0.13.zip",
+  "size": 791694,
   "changelog": [
     "Versão 2.0.13",
     "- Melhorias de performance",
     "- Correções de bugs",
-    "- Atualizações de segurança",
-    "- Otimizações gerais"
-  ]
+    "- Atualizações de segurança"
+  ],
+  "minVersion": "2.0.0",
+  "requiresRestart": true
 }
