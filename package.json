@@ -111,7 +111,7 @@
       "package.json"
     ],
     "asarUnpack": [
-      "electron/preload.js"
+      "electron/preload.cjs"
     ],
     "win": {
       "target": [
