@@ -1,7 +1,7 @@
 {
   "name": "smart-tech-rolandia",
   "private": true,
-  "version": "3.0.8",
+  "version": "3.0.9",
   "description": "Sistema de gestão completo para assistência técnica - Smart Tech Rolândia 2.0",
   "author": "Smart Tech Rolândia",
   "type": "module",
