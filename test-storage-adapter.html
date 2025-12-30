@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Storage Adapter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #10b981; color: white; }
+        .error { background: #ef4444; color: white; }
+        .warning { background: #f59e0b; color: white; }
+        .info { background: #3b82f6; color: white; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #2563eb; }
+        pre {
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de Storage Adapter - Zustand Persist</h1>
+    
+    <div class="test-section">
+        <h2>📋 Teste 1: Verificar Storage Adapter</h2>
+        <button onclick="testStorageAdapter()">Executar Teste</button>
+        <div id="test1-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>💾 Teste 2: Verificar localStorage</h2>
+        <button onclick="testLocalStorage()">Executar Teste</button>
+        <div id="test2-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔄 Teste 3: Verificar Electron (se disponível)</h2>
+        <button onclick="testElectron()">Executar Teste</button>
+        <div id="test3-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Teste 4: Simular Salvamento e Carregamento</h2>
+        <button onclick="testSaveLoad()">Executar Teste</button>
+        <div id="test4-result"></div>
+    </div>
+
+    <script type="module">
+        // Simular storage adapter
+        const STORAGE_KEY = 'smart-tech-rolandia-data';
+        
+        const isElectron = () => {
+            return typeof window !== 'undefined' && 
+                   window.electron !== undefined && 
+                   window.electron?.isElectron === true;
+        };
+
+        const createFileStorage = () => {
+            return {
+                getItem: async (name) => {
+                    try {
+                        if (isElectron() && window.electron?.storage) {
+                            try {
+                                const result = await window.electron.storage.load();
+                                if (result.success && result.data !== null) {
+                                    const serialized = JSON.stringify(result.data);
+                                    try {
+                                        localStorage.setItem(STORAGE_KEY, serialized);
+                                    } catch (localError) {
+                                        console.warn('Erro ao sincronizar com localStorage:', localError);
+                                    }
+                                    return serialized;
+                                }
+                            } catch (ipcError) {
+                                console.warn('Erro ao carregar via IPC, usando localStorage:', ipcError);
+                                return localStorage.getItem(STORAGE_KEY);
+                            }
+                        }
+                        return localStorage.getItem(STORAGE_KEY);
+                    } catch (error) {
+                        console.error('Erro ao carregar dados:', error);
+                        return null;
+                    }
+                },
+
+                setItem: async (name, value) => {
+                    try {
+                        let data;
+                        try {
+                            data = JSON.parse(value);
+                        } catch (parseError) {
+                            console.error('Erro ao parsear dados:', parseError);
+                            return;
+                        }
+
+                        if (isElectron() && window.electron?.storage) {
+                            try {
+                                const result = await window.electron.storage.save(data);
+                                if (result.success) {
+                                    try {
+                                        localStorage.setItem(STORAGE_KEY, value);
+                                    } catch (localError) {
+                                        console.warn('Erro ao sincronizar:', localError);
+                                    }
+                                    return;
+                                } else {
+                                    console.warn('Erro ao salvar em arquivo, usando localStorage');
+                                    localStorage.setItem(STORAGE_KEY, value);
+                                    return;
+                                }
+                            } catch (ipcError) {
+                                console.warn('Erro ao salvar via IPC, usando localStorage');
+                                localStorage.setItem(STORAGE_KEY, value);
+                                return;
+                            }
+                        }
+                        localStorage.setItem(STORAGE_KEY, value);
+                    } catch (error) {
+                        console.error('Erro ao salvar dados:', error);
+                        try {
+                            localStorage.setItem(STORAGE_KEY, value);
+                        } catch (localError) {
+                            console.error('Erro crítico:', localError);
+                        }
+                    }
+                },
+
+                removeItem: async (name) => {
+                    try {
+                        if (isElectron() && window.electron?.storage) {
+                            try {
+                                await window.electron.storage.clear();
+                            } catch (ipcError) {
+                                console.warn('Erro ao limpar arquivo:', ipcError);
+                            }
+                        }
+                        localStorage.removeItem(STORAGE_KEY);
+                    } catch (error) {
+                        console.error('Erro ao remover dados:', error);
+                    }
+                },
+            };
+        };
+
+        window.testStorageAdapter = async () => {
+            const resultDiv = document.getElementById('test1-result');
+            resultDiv.innerHTML = '<div class="info">Executando teste...</div>';
+            
+            try {
+                const storage = createFileStorage();
+                
+                // Testar getItem
+                const getItemResult = await storage.getItem('test');
+                const getItemWorks = typeof getItemResult === 'string' || getItemResult === null;
+                
+                // Testar setItem
+                const testData = JSON.stringify({ test: 'data' });
+                await storage.setItem('test', testData);
+                const setItemWorks = localStorage.getItem(STORAGE_KEY) !== null;
+                
+                // Testar removeItem
+                await storage.removeItem('test');
+                const removeItemWorks = localStorage.getItem(STORAGE_KEY) === null;
+                
+                let html = '';
+                html += `<div class="test-result ${getItemWorks ? 'success' : 'error'}">`;
+                html += `getItem: ${getItemWorks ? '✅ FUNCIONANDO' : '❌ FALHOU'}`;
+                html += `</div>`;
+                
+                html += `<div class="test-result ${setItemWorks ? 'success' : 'error'}">`;
+                html += `setItem: ${setItemWorks ? '✅ FUNCIONANDO' : '❌ FALHOU'}`;
+                html += `</div>`;
+                
+                html += `<div class="test-result ${removeItemWorks ? 'success' : 'error'}">`;
+                html += `removeItem: ${removeItemWorks ? '✅ FUNCIONANDO' : '❌ FALHOU'}`;
+                html += `</div>`;
+                
+                if (getItemWorks && setItemWorks && removeItemWorks) {
+                    html += `<div class="test-result success">✅ TODOS OS TESTES PASSARAM!</div>`;
+                } else {
+                    html += `<div class="test-result error">❌ ALGUNS TESTES FALHARAM</div>`;
+                }
+                
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-result error">❌ ERRO: ${error.message}</div>`;
+            }
+        };
+
+        window.testLocalStorage = () => {
+            const resultDiv = document.getElementById('test2-result');
+            try {
+                const testKey = 'test-storage-key';
+                const testValue = JSON.stringify({ test: 'data', timestamp: Date.now() });
+                
+                localStorage.setItem(testKey, testValue);
+                const retrieved = localStorage.getItem(testKey);
+                const parsed = JSON.parse(retrieved);
+                
+                localStorage.removeItem(testKey);
+                
+                let html = '';
+                html += `<div class="test-result success">✅ localStorage está funcionando</div>`;
+                html += `<div class="test-result info">Dados salvos: ${testValue.length} bytes</div>`;
+                html += `<div class="test-result info">Dados recuperados: ${retrieved.length} bytes</div>`;
+                html += `<div class="test-result ${parsed.test === 'data' ? 'success' : 'error'}">`;
+                html += `Validação: ${parsed.test === 'data' ? '✅ DADOS VÁLIDOS' : '❌ DADOS INVÁLIDOS'}`;
+                html += `</div>`;
+                
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-result error">❌ ERRO: ${error.message}</div>`;
+            }
+        };
+
+        window.testElectron = () => {
+            const resultDiv = document.getElementById('test3-result');
+            const isElectronEnv = isElectron();
+            
+            let html = '';
+            html += `<div class="test-result ${isElectronEnv ? 'success' : 'warning'}">`;
+            html += `Electron: ${isElectronEnv ? '✅ DETECTADO' : '⚠️ NÃO DETECTADO (modo web)'}`;
+            html += `</div>`;
+            
+            if (isElectronEnv) {
+                html += `<div class="test-result info">Storage API: ${window.electron?.storage ? '✅ DISPONÍVEL' : '❌ NÃO DISPONÍVEL'}</div>`;
+            } else {
+                html += `<div class="test-result info">Usando localStorage como fallback</div>`;
+            }
+            
+            resultDiv.innerHTML = html;
+        };
+
+        window.testSaveLoad = async () => {
+            const resultDiv = document.getElementById('test4-result');
+            resultDiv.innerHTML = '<div class="info">Executando teste...</div>';
+            
+            try {
+                const storage = createFileStorage();
+                const testData = {
+                    clientes: [{ id: '1', nome: 'Teste Cliente' }],
+                    produtos: [{ id: '1', nome: 'Teste Produto' }],
+                    configuracao: { nomeEmpresa: 'Empresa Teste' }
+                };
+                
+                // Salvar
+                await storage.setItem('test', JSON.stringify(testData));
+                
+                // Aguardar um pouco
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                // Carregar
+                const loaded = await storage.getItem('test');
+                const parsed = JSON.parse(loaded);
+                
+                // Validar
+                const isValid = 
+                    parsed.clientes?.length === 1 &&
+                    parsed.produtos?.length === 1 &&
+                    parsed.configuracao?.nomeEmpresa === 'Empresa Teste';
+                
+                // Limpar
+                await storage.removeItem('test');
+                
+                let html = '';
+                html += `<div class="test-result ${isValid ? 'success' : 'error'}">`;
+                html += `Teste Save/Load: ${isValid ? '✅ PASSOU' : '❌ FALHOU'}`;
+                html += `</div>`;
+                
+                if (isValid) {
+                    html += `<div class="test-result success">✅ Dados salvos e carregados corretamente!</div>`;
+                    html += `<pre>${JSON.stringify(parsed, null, 2)}</pre>`;
+                } else {
+                    html += `<div class="test-result error">❌ Dados não correspondem</div>`;
+                }
+                
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-result error">❌ ERRO: ${error.message}</div>`;
+            }
+        };
+    </script>
+</body>
+</html>
+

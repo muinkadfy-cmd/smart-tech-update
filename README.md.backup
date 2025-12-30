@@ -1,0 +1,123 @@
+# Smart Tech Rolândia 2.0
+
+Sistema completo de gestão para assistência técnica, totalmente offline e executável para Windows.
+
+## 🚀 Funcionalidades
+
+- ✅ Dashboard completo com gráficos e estatísticas
+- ✅ Gestão de Clientes
+- ✅ Gestão de Aparelhos
+- ✅ Gestão de Produtos e Estoque
+- ✅ Ordens de Serviço completas
+- ✅ Sistema de Vendas
+- ✅ Módulo Financeiro
+- ✅ Gestão de Técnicos
+- ✅ Fornecedores
+- ✅ Relatórios
+- ✅ Backup e Restauração
+- ✅ **100% Offline** - Todos os dados salvos localmente
+- ✅ Persistência automática no localStorage
+
+## 📦 Instalação
+
+### Desenvolvimento
+
+```bash
+# Instalar dependências
+npm install
+
+# Iniciar servidor de desenvolvimento
+npm run dev
+```
+
+Acesse: `http://localhost:8081`
+
+### Build para Produção (Web)
+
+```bash
+# Gerar build otimizado
+npm run build
+```
+
+Os arquivos estarão em `dist/`
+
+### Gerar Executável Windows (.exe)
+
+```bash
+# Instalar dependências do Electron (se ainda não instalou)
+npm install
+
+# Gerar executável Windows
+npm run electron:build:win
+```
+
+O executável será gerado em `dist-electron/`
+
+## 🔧 Configuração
+
+### Modo Offline
+
+O sistema é **100% offline**:
+- Todos os dados são salvos no `localStorage` do navegador
+- Não há dependências de APIs externas
+- Funciona sem conexão com internet
+- Dados persistem entre sessões
+
+### Persistência de Dados
+
+Os dados são automaticamente salvos em:
+- **Navegador**: `localStorage` (chave: `smart-tech-rolandia-data`)
+- **Electron**: Dados salvos no perfil do usuário
+
+## 📝 Scripts Disponíveis
+
+- `npm run dev` - Inicia servidor de desenvolvimento
+- `npm run build` - Gera build de produção (web)
+- `npm run electron:dev` - Inicia aplicação Electron em modo dev
+- `npm run electron:build` - Gera executável (todas as plataformas)
+- `npm run electron:build:win` - Gera executável Windows (.exe)
+
+## 🎯 Estrutura do Projeto
+
+```
+SmT2/
+├── src/
+│   ├── components/     # Componentes React
+│   ├── pages/          # Páginas do sistema
+│   ├── stores/         # Estado global (Zustand)
+│   ├── types/          # Tipos TypeScript
+│   └── lib/            # Utilitários
+├── electron/           # Arquivos Electron
+│   ├── main.js         # Processo principal
+│   └── preload.js      # Preload script
+├── dist/               # Build web (gerado)
+└── dist-electron/      # Executáveis (gerado)
+```
+
+## 🔒 Segurança
+
+- Sistema totalmente offline
+- Dados armazenados localmente
+- Sem envio de dados para servidores externos
+- Código fonte disponível para auditoria
+
+## 📄 Licença
+
+Sistema Smart Tech Rolândia 2.0 © 2025 Smart Tech Rolândia Assistência Técnica - Todos os direitos reservados.
+
+Uso exclusivo autorizado ao proprietário. Proibida a reprodução, distribuição ou modificação sem permissão expressa.
+
+## 🛠️ Tecnologias
+
+- React 18
+- TypeScript
+- Vite
+- Zustand (gerenciamento de estado)
+- Electron (executável desktop)
+- Tailwind CSS
+- Recharts (gráficos)
+- Radix UI (componentes)
+
+## 📞 Suporte
+
+Para suporte ou dúvidas, entre em contato com a equipe de desenvolvimento.
