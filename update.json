@@ -1,17 +1,17 @@
 {
-  "available": true,
-  "version": "3.0.11",
-  "currentVersion": "3.0.11",
-  "description": "Atualização 3.0.11 do Smart Tech Rolândia 2.0",
-  "date": "2025-12-30T18:17:47.415Z",
-  "downloadUrl": "https://muinkadfy-cmd.github.io/smart-tech-update/update/update-3.0.11.zip",
-  "size": 814636,
+  "version": "3.0.13",
+  "minVersion": "2.0.0",
+  "releaseDate": "2025-12-30T00:00:00.000Z",
+  "downloadUrl": "https://smart-tech-server.up.railway.app/update/3.0.13/SmartTechSetup.exe",
+  "size": 0,
+  "requiresRestart": true,
   "changelog": [
-    "Versão 3.0.11",
+    "Versão 3.0.13",
+    "- Sistema de licença por MAC implementado",
+    "- Atualização automática com electron-updater",
+    "- Modais UX profissionais",
     "- Melhorias de performance",
     "- Correções de bugs",
-    "- Atualizações de segurança"
-  ],
-  "minVersion": "2.0.0",
-  "requiresRestart": true
+    "- Otimizações gerais"
+  ]
 }
